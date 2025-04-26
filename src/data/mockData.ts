@@ -68,14 +68,15 @@ export const learningDomains = [
 export const dailyChallenges = [
   {
     id: '1',
-    date: new Date().toISOString(),
-    title: 'Build a Counter Component',
-    description: 'Create a simple counter component that allows incrementing and decrementing a value using React.',
-    difficulty: 'Medium',
-    timeEstimate: 20, // minutes
-    points: 75,
-    domain: 'programming',
+    date: '2023-10-01',
+    title: 'Challenge 1',
+    description: 'Solve a coding problem.',
+    difficulty: 'Easy',
+    timeEstimate: 30,
+    points: 10,
+    domain: 'Programming',
     completed: false,
+    subject: 'General', 
   },
   {
     id: '2',

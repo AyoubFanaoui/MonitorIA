@@ -43,51 +43,82 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     setIsLoading(false);
   }, []);
 
-  // Mock login function
+  // login function
   const login = async (email: string, password: string) => {
     setIsLoading(true);
-    return new Promise<void>((resolve, reject) => {
-      setTimeout(() => {
-        if (email && password) {
-          const existingUser = {
-            id: '1',
-            name: email.split('@')[0],
-            email,
-          };
-          setUser(existingUser);
-          localStorage.setItem('user', JSON.stringify(existingUser));
-          setIsLoading(false);
-          resolve();
-        } else {
-          setIsLoading(false);
-          reject(new Error('Invalid login credentials'));
-        }
-      }, 1000);
-    });
+    try {
+      const response = await fetch('http://localhost:5000/auth/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password }),
+      });
+  
+      if (!response.ok) {
+        throw new Error('Login failed');
+      }
+  
+      const data = await response.json();
+      const userFromResponse = data.user;
+      
+      const existingUser = {
+        id: userFromResponse.id,
+        name: '', // Name not provided by backend, set as empty string
+        email: userFromResponse.email,
+      };
+  
+      setUser(existingUser);
+      localStorage.setItem('user', JSON.stringify(existingUser));
+      localStorage.setItem('token', data.token); // Optionally store token if needed
+    } catch (error) {
+      console.error('Login error:', error);
+      throw error;
+    } finally {
+      setIsLoading(false);
+    }
   };
+  
+  
 
-  // Mock signup function
+
+  // signup function
   const signup = async (email: string, password: string) => {
     setIsLoading(true);
-    return new Promise<void>((resolve, reject) => {
-      setTimeout(() => {
-        if (email && password) {
-          const newUser = {
-            id: Math.random().toString(36).substr(2, 9), // Random id
-            name: email.split('@')[0],
-            email,
-          };
-          setUser(newUser);
-          localStorage.setItem('user', JSON.stringify(newUser));
-          setIsLoading(false);
-          resolve();
-        } else {
-          setIsLoading(false);
-          reject(new Error('Invalid signup credentials'));
-        }
-      }, 1000);
-    });
+    try {
+      const response = await fetch('http://localhost:5000/auth/signup', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          firstName: 'Firstname', // <-- You might want to let users fill these
+          lastName: 'Lastname',
+          email,
+          password,
+          birthDate: '1990-01-01', // <-- Or ask for it dynamically
+        }),
+      });
+  
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || 'Signup failed');
+      }
+  
+      const data = await response.json();
+      const newUser = {
+        id: data.user.id,
+        name: `${data.user.firstName} ${data.user.lastName}`, // Assuming you get user info back
+        email: data.user.email,
+      };
+      setUser(newUser);
+      localStorage.setItem('user', JSON.stringify(newUser));
+      localStorage.setItem('token', data.token); // If token is sent back
+    } catch (error) {
+      console.error('Signup error:', error);
+      throw error;
+    } finally {
+      setIsLoading(false);
+    }
   };
+  
+  
 
   const logout = () => {
     setUser(null);
