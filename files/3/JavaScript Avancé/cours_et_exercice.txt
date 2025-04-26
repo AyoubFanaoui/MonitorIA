@@ -1,0 +1,293 @@
+# Cours sur JavaScript Avancé - Niveau Intermédiaire
+
+## Table des Matières
+1. **Introduction à JavaScript Avancé**
+2. **Fonctions en Profondeur**
+3. **Closures et Fonctions de Haut Niveau**
+4. **Modules et Organisation du Code**
+5. **Promesses (Promises) et Async/Await**
+6. **Prototypes et Héritage**
+7. **Caractéristiques Avancées de ES6**
+8. **Programmation Orientée Objet (POO)**
+9. **Exercice Pratique**
+
+---
+
+## 1. Introduction à JavaScript Avancé
+
+JavaScript est un langage de programmation polyvalent, utilisé principalement pour le développement web. À un niveau intermédiaire, nous allons explorer des concepts plus avancés tels que les fonctions, les closures, les promesses, et plus encore.
+
+---
+
+## 2. Fonctions en Profondeur
+
+### Fonctions comme Objet
+En JavaScript, les fonctions sont des objets. Elles peuvent être stockées dans des variables, passées comme arguments, et retournées par d'autres fonctions.
+
+```javascript
+const greeting = function(name) {
+    return `Bonjour, ${name}!`;
+};
+
+console.log(greeting("Alice")); // Affiche: Bonjour, Alice!
+```
+
+### Paramètres et Valeurs de Retour
+Les fonctions peuvent avoir des paramètres et retourner des valeurs.
+
+```javascript
+function add(a, b) {
+    return a + b;
+}
+
+const result = add(5, 3);
+console.log(result); // Affiche: 8
+```
+
+---
+
+## 3. Closures et Fonctions de Haut Niveau
+
+### Closures
+Une closure est une fonction qui a accès aux variables d'une fonction externe, même après que cette fonction ait terminé son exécution.
+
+```javascript
+function outer() {
+    let count = 0;
+    function inner() {
+        count++;
+        console.log(count);
+    }
+    return inner;
+}
+
+const myClosure = outer();
+myClosure(); // Affiche: 1
+myClosure(); // Affiche: 2
+```
+
+### Fonctions de Haut Niveau
+Les fonctions de haut niveau sont des fonctions qui retournent d'autres fonctions.
+
+```javascript
+function createGreeting(greeting) {
+    return function(name) {
+        return `${greeting}, ${name}!`;
+    };
+}
+
+const hello = createGreeting("Hello");
+console.log(hello("Alice")); // Affiche: Hello, Alice!
+```
+
+---
+
+## 4. Modules et Organisation du Code
+
+### Le Pattern Module
+Pour organiser le code, on utilise souvent le pattern module.
+
+```javascript
+// monModule.js
+const greeting = function(name) {
+    return `Bonjour, ${name}!`;
+};
+
+export { greeting };
+```
+
+```javascript
+// main.js
+import { greeting } from './monModule.js';
+
+console.log(greeting("Alice")); // Affiche: Bonjour, Alice!
+```
+
+---
+
+## 5. Promesses (Promises) et Async/Await
+
+### Promesses
+Les promesses sont utilisées pour gérer les opérations asynchrones.
+
+```javascript
+const promise = new Promise((resolve, reject) => {
+    setTimeout(() => {
+        resolve("Opération terminée avec succès");
+    }, 1000);
+});
+
+promise.then(result => {
+    console.log(result); // Affiche après 1 seconde: Opération terminée avec succès
+});
+```
+
+### Async/Await
+`async/await` facilite la gestion des promesses.
+
+```javascript
+async function asyncFunction() {
+    const result = await new Promise((resolve) => {
+        setTimeout(() => resolve("Terminé"), 1000);
+    });
+    console.log(result); // Affiche après 1 seconde: Terminé
+}
+
+asyncFunction();
+```
+
+---
+
+## 6. Prototypes et Héritage
+
+### Prototypes
+En JavaScript, les prototypes sont utilisés pour hériter des méthodes et des propriétés.
+
+```javascript
+const obj = {};
+console.log(obj.toString); // Affiche: [fonction toString]
+```
+
+### Héritage
+L'héritage est implémenté via les prototypes.
+
+```javascript
+function Animal() {}
+Animal.prototype.move = function() {
+    console.log("Je me déplace");
+};
+
+function Dog() {}
+Dog.prototype = Object.create(Animal.prototype);
+Dog.prototype.bark = function() {
+    console.log("Woof!");
+};
+
+const myDog = new Dog();
+myDog.move(); // Affiche: Je me déplace
+myDog.bark(); // Affiche: Woof!
+```
+
+---
+
+## 7. Caractéristiques Avancées de ES6
+
+### Destructuring
+Le destructuring permet de déstructurer les tableaux et les objets.
+
+```javascript
+const person = { name: "Alice", age: 30 };
+const { name, age } = person;
+console.log(name); // Affiche: Alice
+console.log(age); // Affiche: 30
+```
+
+### Spread/Rest Operator
+Le spread operator permet de répandre les éléments d'un tableau.
+
+```javascript
+const arr = [1, 2, 3];
+const newArr = [...arr, 4, 5];
+console.log(newArr); // Affiche: [1, 2, 3, 4, 5]
+```
+
+---
+
+## 8. Programmation Orientée Objet (POO)
+
+### Classes
+En JavaScript, les classes sont une syntaxe糖衣 pour les prototypes.
+
+```javascript
+class Animal {
+    constructor(name) {
+        this.name = name;
+    }
+    move() {
+        console.log("Je me déplace");
+    }
+}
+
+class Dog extends Animal {
+    bark() {
+        console.log("Woof!");
+    }
+}
+
+const myDog = new Dog("Buddy");
+myDog.move(); // Affiche: Je me déplace
+myDog.bark(); // Affiche: Woof!
+```
+
+---
+
+## 9. Exercice Pratique
+
+### Objectif
+Créer une calculatrice qui peut additionner, soustraire, multiplier, et diviser deux nombres. La calculatrice doit également avoir une fonctionnalité de historique.
+
+### Instructions
+1. Créez une classe `Calculator`.
+2. La classe doit avoir une méthode `add`, `subtract`, `multiply`, et `divide`.
+3. Chaque méthode doit enregistrer l'opération dans un tableau `history`.
+4. Implémentez une méthode `showHistory` qui affiche toutes les opérations effectuées.
+
+### Exemple de Sortie
+
+```javascript
+const calc = new Calculator();
+calc.add(5, 3); // Résultat: 8
+calc.subtract(10, 2); // Résultat: 8
+calc.showHistory(); // Affiche: ["5 + 3 = 8", "10 - 2 = 8"]
+```
+
+### Solution
+
+```javascript
+class Calculator {
+    constructor() {
+        this.history = [];
+    }
+
+    add(a, b) {
+        const result = a + b;
+        this.history.push(`${a} + ${b} = ${result}`);
+        return result;
+    }
+
+    subtract(a, b) {
+        const result = a - b;
+        this.history.push(`${a} - ${b} = ${result}`);
+        return result;
+    }
+
+    multiply(a, b) {
+        const result = a * b;
+        this.history.push(`${a} * ${b} = ${result}`);
+        return result;
+    }
+
+    divide(a, b) {
+        if (b === 0) {
+            throw new Error("Division par zéro");
+        }
+        const result = a / b;
+        this.history.push(`${a} / ${b} = ${result}`);
+        return result;
+    }
+
+    showHistory() {
+        console.log(this.history);
+    }
+}
+
+// Test
+const calc = new Calculator();
+calc.add(5, 3);
+calc.subtract(10, 2);
+calc.showHistory(); // Affiche: ["5 + 3 = 8", "10 - 2 = 8"]
+```
+
+---
+
+Félicitations! Vous avez maintenant une bonne compréhension des concepts avancés de JavaScript. Continuez à pratiquer et à explorer! 😊
