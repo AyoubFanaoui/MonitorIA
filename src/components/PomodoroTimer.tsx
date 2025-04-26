@@ -4,6 +4,7 @@ const PomodoroTimer = ({ initialMinutes, size = 'md' }) => {
   const [minutes, setMinutes] = useState(initialMinutes);
   const [seconds, setSeconds] = useState(0);
   const [isActive, setIsActive] = useState(false);
+  const [isStarted, setIsStarted] = useState(false); // To track if the timer has started
 
   useEffect(() => {
     let interval;
@@ -29,11 +30,16 @@ const PomodoroTimer = ({ initialMinutes, size = 'md' }) => {
     return () => clearInterval(interval);
   }, [isActive, minutes, seconds]);
 
-  const startStop = () => setIsActive(!isActive);
+  const startStop = () => {
+    setIsActive(!isActive);
+    if (!isStarted) setIsStarted(true); // Mark as started after first click
+  };
+
   const reset = () => {
     setMinutes(initialMinutes);
     setSeconds(0);
     setIsActive(false);
+    setIsStarted(false); // Reset start state
   };
 
   // Compact button style
@@ -42,16 +48,26 @@ const PomodoroTimer = ({ initialMinutes, size = 'md' }) => {
   const resetButtonStyle = `bg-red-500 text-white rounded-full text-xs p-2 hover:bg-red-600`;
 
   return (
-    <div className="flex items-center gap-2">
-      <button onClick={startStop} className={startButtonStyle}>
-        {isActive ? 'Pause' : 'Start'}
-      </button>
-      <button onClick={reset} className={resetButtonStyle}>
-        Reset
-      </button>
-      <div className="text-white text-xs">
-        {String(minutes).padStart(2, '0')}:{String(seconds).padStart(2, '0')}
-      </div>
+    <div className="flex items-center gap-4">
+      {!isStarted ? (
+        <button onClick={startStop} className={startButtonStyle}>
+          Start Pomodoro
+        </button>
+      ) : (
+        <>
+          <div className="text-white text-xs">
+            {String(minutes).padStart(2, '0')}:{String(seconds).padStart(2, '0')}
+          </div>
+          <div className="flex gap-2">
+            <button onClick={startStop} className={startButtonStyle}>
+              {isActive ? 'Pause' : 'Resume'}
+            </button>
+            <button onClick={reset} className={resetButtonStyle}>
+              Reset
+            </button>
+          </div>
+        </>
+      )}
     </div>
   );
 };

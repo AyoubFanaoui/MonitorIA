@@ -28,7 +28,7 @@ const Navbar = () => {
           <div className="flex items-center space-x-4">
             {/* Logo */}
             <img 
-              src="/images/logo+name.png"
+              src="/images/logo.png"
               alt="MentorAI Logo"
               className="w-12 h-12 object-contain border-3 border-white rounded-md"
             />
