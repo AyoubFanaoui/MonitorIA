@@ -27,17 +27,19 @@ const Navbar = () => {
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
           <div className="flex items-center space-x-4">
-            <img 
-              src="/images/logohw.png"
-              alt="MentorAI Logo"
-              className="w-12 h-12 object-contain  rounded-md"
-            />
-            <span className="text-white text-2xl font-bold">MentorAI</span>
+          <img src="/images/logohw.png" alt="MentorAI Logo" className="h-10 w-auto" />
+
+
           </div>
 
           {/* Desktop Nav */}
-          <div className="hidden md:flex justify-between items-center w-full ml-10">
-            {/* Left - links */}
+          <div className="hidden md:flex items-center w-full ml-10 justify-between">
+            {/* Left - Pomodoro */}
+            <div className="flex items-center space-x-4">
+              <PomodoroTimer initialMinutes={25} size="sm" />
+            </div>
+
+            {/* Right - Links + Logout */}
             <div className="flex items-center space-x-6">
               <NavLink 
                 to="/dashboard"
@@ -83,11 +85,7 @@ const Navbar = () => {
                   <span>Choose Domain</span>
                 </div>
               </NavLink>
-            </div>
 
-            {/* Right - Pomodoro + Logout */}
-            <div className="flex items-center space-x-4 ml-auto">
-              <PomodoroTimer initialMinutes={25} size="sm" />
               <button 
                 onClick={handleLogout} 
                 className="px-4 py-2 rounded-lg text-white hover:bg-[#106861] transition-all duration-300 flex items-center gap-2"
@@ -113,6 +111,12 @@ const Navbar = () => {
       {/* Mobile Menu */}
       <div className={`md:hidden ${isOpen ? 'block' : 'hidden'} bg-white shadow-lg rounded-b-lg`}>
         <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+          {/* Pomodoro first */}
+          <div className="px-3 py-2 flex items-center justify-start">
+            <PomodoroTimer initialMinutes={25} size="sm" />
+          </div>
+
+          {/* Other Links */}
           <NavLink 
             to="/dashboard"
             onClick={closeMenu}
@@ -161,14 +165,9 @@ const Navbar = () => {
             </div>
           </NavLink>
 
-          {/* Pomodoro Timer for mobile */}
-          <div className="px-3 py-2 flex items-center justify-between">
-            <PomodoroTimer initialMinutes={25} size="sm" />
-          </div>
-
-          {/* Logout for mobile */}
+          {/* Logout */}
           <button 
-            onClick={handleLogout} 
+            onClick={handleLogout}
             className="block w-full text-left px-3 py-2 rounded-md text-base font-medium text-red-600 hover:text-red-800 hover:bg-red-100 transition-all duration-300 flex items-center gap-2"
           >
             <LogOut size={18} />
