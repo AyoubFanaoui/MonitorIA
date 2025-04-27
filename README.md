@@ -38,9 +38,7 @@ Moroccan students in self-training (development, data, languages...).
 |-----------|-----------|-----------|-------------|
 | React.js  | Node.js   | MySQL     | GPT-3.5 API | 
 
----
 
----
 
 ## Application Preview
 ![Domaine d'apprentissage  ](/1.jpg)
